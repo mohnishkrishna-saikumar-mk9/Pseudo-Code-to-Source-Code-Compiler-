@@ -328,3 +328,15 @@ The project includes test pseudocodes covering various complexity levels:
 ## 👥 Contributors
 
 - **Mohnish Krishna Saikumar** — [GitHub](https://github.com/mohnishkrishna-saikumar-mk9)
+
+---
+
+## 📄 License
+
+This project is open source and available under the [MIT License](LICENSE).
+
+---
+
+<p align="center">
+  <b>⭐ Star this repo if you found it useful!</b>
+</p>
