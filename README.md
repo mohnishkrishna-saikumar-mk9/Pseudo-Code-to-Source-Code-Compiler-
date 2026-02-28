@@ -331,12 +331,4 @@ The project includes test pseudocodes covering various complexity levels:
 
 ---
 
-## 📄 License
 
-This project is open source and available under the [MIT License](LICENSE).
-
----
-
-<p align="center">
-  <b>⭐ Star this repo if you found it useful!</b>
-</p>
