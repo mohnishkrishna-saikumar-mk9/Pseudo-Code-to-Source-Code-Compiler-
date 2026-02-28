@@ -9,16 +9,16 @@
 ---
 
 ## 📋 Table of Contents
-- [Overview](##overview)
-- [Features](##features)
-- [Compiler Architecture](##compiler-architecture)
-- [Supported Pseudocode Constructs](##supported-pseudocode-constructs)
-- [Screenshots](##screenshots)
-- [Installation](##installation)
-- [Usage](##usage)
-- [Example](##example)
-- [Project Structure](##project-structure)
-- [Testing](##testing)
+- [Overview](#overview)
+- [Features](#features)
+- [Compiler Architecture](#compiler-architecture)
+- [Supported Pseudocode Constructs](#supported-pseudocode-constructs)
+- [Screenshots](#screenshots)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Example](#example)
+- [Project Structure](#project-structure)
+- [Testing](#testing)
 
 ---
 
@@ -328,7 +328,3 @@ The project includes test pseudocodes covering various complexity levels:
 ## 👥 Contributors
 
 - **Mohnish Krishna Saikumar** — [GitHub](https://github.com/mohnishkrishna-saikumar-mk9)
-
----
-
-
