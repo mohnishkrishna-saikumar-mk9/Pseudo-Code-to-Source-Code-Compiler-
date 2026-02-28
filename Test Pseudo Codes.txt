@@ -1,0 +1,250 @@
+"""
+Test the pseudocode compiler with easy, medium, and complex pseudocodes.
+"""
+import sys
+import os
+os.environ['PYTHONIOENCODING'] = 'utf-8'
+sys.stdout.reconfigure(encoding='utf-8')
+
+sys.path.insert(0, r"c:\Users\mohni\Videos")
+from trail1 import Compiler
+
+compiler = Compiler()
+
+# ============================================================
+# TEST 1 (EASY): Simple variable assignment and print
+# ============================================================
+test1 = """start
+declare integer x
+set x to 10
+print x
+print "Hello World"
+end"""
+
+# ============================================================
+# TEST 2 (EASY): Simple if-else
+# ============================================================
+test2 = """start
+declare integer age
+set age to 18
+if age >= 18 then
+    print "Adult"
+else
+    print "Minor"
+endif
+end"""
+
+# ============================================================
+# TEST 3 (MEDIUM): For loop with accumulator
+# ============================================================
+test3 = """start
+declare integer sum
+declare integer i
+set sum to 0
+for i = 1 to 10
+    set sum to sum + i
+endfor
+print "Sum is:"
+print sum
+end"""
+
+# ============================================================
+# TEST 4 (MEDIUM): While loop
+# ============================================================
+test4 = """start
+declare integer count
+set count to 5
+while count > 0 do
+    print count
+    set count to count - 1
+endwhile
+print "Done!"
+end"""
+
+# ============================================================
+# TEST 5 (MEDIUM): Nested if with modulo
+# ============================================================
+test5 = """start
+declare integer num
+set num to 15
+if num % 3 == 0 then
+    if num % 5 == 0 then
+        print "FizzBuzz"
+    else
+        print "Fizz"
+    endif
+else
+    if num % 5 == 0 then
+        print "Buzz"
+    else
+        print num
+    endif
+endif
+end"""
+
+# ============================================================
+# TEST 6 (COMPLEX): Function definition
+# ============================================================
+test6 = """start
+function greet(name)
+    print "Hello"
+    print name
+endfunction
+
+declare integer x
+set x to 42
+print x
+end"""
+
+# ============================================================
+# TEST 7 (COMPLEX): Array operations
+# ============================================================
+test7 = """start
+declare integer n
+set n to 5
+declare integer arr[5]
+declare integer i
+
+for i = 0 to 5
+    set arr[i] to i * 2
+endfor
+
+for i = 0 to 5
+    print arr[i]
+endfor
+end"""
+
+# ============================================================
+# TEST 8 (COMPLEX): Leap year checker (the default sample)
+# ============================================================
+test8 = """start
+declare integer year
+declare integer isLeap
+set year to 2024
+set isLeap to 0
+print "Checking Leap Year"
+print year
+if year % 4 == 0 then
+    if year % 100 == 0 then
+        if year % 400 == 0 then
+            set isLeap to 1
+        endif
+    else
+        set isLeap to 1
+    endif
+endif
+if isLeap == 1 then
+    print "Year is a LEAP YEAR"
+else
+    print "Year is NOT a leap year"
+endif
+end"""
+
+# ============================================================
+# TEST 9 (COMPLEX): String handling
+# ============================================================
+test9 = """start
+declare string name
+declare integer length
+input name
+print "You entered:"
+print name
+end"""
+
+# ============================================================
+# TEST 10 (MEDIUM): Input and comparison
+# ============================================================
+test10 = """start
+declare integer a
+declare integer b
+input a
+input b
+if a > b then
+    print "A is greater"
+else
+    if a == b then
+        print "Equal"
+    else
+        print "B is greater"
+    endif
+endif
+end"""
+
+tests = [
+    ("EASY - Variable & Print", test1),
+    ("EASY - If-Else", test2),
+    ("MEDIUM - For Loop Accumulator", test3),
+    ("MEDIUM - While Loop Countdown", test4),
+    ("MEDIUM - Nested If + Modulo (FizzBuzz)", test5),
+    ("COMPLEX - Function Definition", test6),
+    ("COMPLEX - Array Operations", test7),
+    ("COMPLEX - Leap Year Checker", test8),
+    ("COMPLEX - String Handling", test9),
+    ("MEDIUM - Input & Comparison", test10),
+]
+
+languages = ['C', 'C++', 'Java']
+
+passed = 0
+failed = 0
+issues = []
+
+for test_name, pseudocode in tests:
+    print(f"\n{'='*70}")
+    print(f"TEST: {test_name}")
+    print(f"{'='*70}")
+    
+    for lang in languages:
+        code, error, tokens = compiler.compile(pseudocode, lang)
+        if error:
+            print(f"  [FAIL] {lang}: {error}")
+            failed += 1
+            issues.append((test_name, lang, error))
+        else:
+            ok = True
+            if lang == 'C' and '#include <stdio.h>' not in code:
+                ok = False
+                issues.append((test_name, lang, "Missing stdio.h include"))
+            if lang == 'C++' and '#include <iostream>' not in code:
+                ok = False
+                issues.append((test_name, lang, "Missing iostream include"))
+            if lang == 'Java' and 'public class Main' not in code:
+                ok = False
+                issues.append((test_name, lang, "Missing Main class"))
+            
+            if ok:
+                print(f"  [PASS] {lang}: OK")
+                passed += 1
+            else:
+                print(f"  [WARN] {lang}: Generated but with issues")
+                failed += 1
+
+print(f"\n{'='*70}")
+print(f"SUMMARY: {passed} passed, {failed} failed out of {passed+failed} total")
+print(f"{'='*70}")
+
+if issues:
+    print("\nISSUES FOUND:")
+    for test_name, lang, err in issues:
+        print(f"  - [{lang}] {test_name}: {err}")
+
+# Print all generated code for each test
+print(f"\n\n{'#'*70}")
+print("FULL GENERATED CODE OUTPUT")
+print(f"{'#'*70}")
+
+for test_name, pseudocode in tests:
+    for lang in languages:
+        code, error, tokens = compiler.compile(pseudocode, lang)
+        if code:
+            print(f"\n{'='*70}")
+            print(f"{test_name} -> {lang}")
+            print(f"{'='*70}")
+            print(code)
+
+# Token test
+print(f"\n{'='*70}")
+print("TOKEN TEST: Simple expression")
+print(f"{'='*70}")
+tokens = compiler.lexer.tokenize("set x to 5 + 3 * 2")
+print(compiler.format_tokens(tokens))

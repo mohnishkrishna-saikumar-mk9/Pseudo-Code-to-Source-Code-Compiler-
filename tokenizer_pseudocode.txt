@@ -1,0 +1,311 @@
+start
+
+declare string buffer
+declare string token
+declare string output
+declare integer i
+declare integer j
+declare integer k
+declare integer c
+declare integer tokenCount
+declare integer found
+
+print "--- C Dynamic Token Generator ---"
+print "Type your code below:"
+print "-----------------------------------"
+
+input buffer
+
+set tokenCount to 0
+set i to 0
+
+while buffer[i] != 0 do
+    set c to buffer[i]
+
+    if c == 32 then
+        set i to i + 1
+        continue
+    endif
+    if c == 9 then
+        set i to i + 1
+        continue
+    endif
+    if c == 10 then
+        set i to i + 1
+        continue
+    endif
+    if c == 13 then
+        set i to i + 1
+        continue
+    endif
+
+    if c == 43 then
+        print "OP              +"
+        set tokenCount to tokenCount + 1
+        set i to i + 1
+        continue
+    endif
+    if c == 45 then
+        print "OP              -"
+        set tokenCount to tokenCount + 1
+        set i to i + 1
+        continue
+    endif
+    if c == 42 then
+        print "OP              *"
+        set tokenCount to tokenCount + 1
+        set i to i + 1
+        continue
+    endif
+    if c == 47 then
+        print "OP              /"
+        set tokenCount to tokenCount + 1
+        set i to i + 1
+        continue
+    endif
+    if c == 61 then
+        print "OP              ="
+        set tokenCount to tokenCount + 1
+        set i to i + 1
+        continue
+    endif
+    if c == 60 then
+        print "OP              <"
+        set tokenCount to tokenCount + 1
+        set i to i + 1
+        continue
+    endif
+    if c == 62 then
+        print "OP              >"
+        set tokenCount to tokenCount + 1
+        set i to i + 1
+        continue
+    endif
+
+    if c == 40 then
+        print "SYMBOL          ("
+        set tokenCount to tokenCount + 1
+        set i to i + 1
+        continue
+    endif
+    if c == 41 then
+        print "SYMBOL          )"
+        set tokenCount to tokenCount + 1
+        set i to i + 1
+        continue
+    endif
+    if c == 123 then
+        print "SYMBOL          {"
+        set tokenCount to tokenCount + 1
+        set i to i + 1
+        continue
+    endif
+    if c == 125 then
+        print "SYMBOL          }"
+        set tokenCount to tokenCount + 1
+        set i to i + 1
+        continue
+    endif
+    if c == 59 then
+        print "SYMBOL          ;"
+        set tokenCount to tokenCount + 1
+        set i to i + 1
+        continue
+    endif
+
+    set found to 0
+    if c >= 48 then
+        if c <= 57 then
+            set found to 1
+        endif
+    endif
+    if found == 1 then
+        set j to 0
+        set found to 1
+        while found == 1 do
+            set token[j] to buffer[i]
+            set j to j + 1
+            set i to i + 1
+            set c to buffer[i]
+            set found to 0
+            if c >= 48 then
+                if c <= 57 then
+                    set found to 1
+                endif
+            endif
+            if c == 46 then
+                set found to 1
+            endif
+        endwhile
+        set token[j] to 0
+        set output[0] to 78
+        set output[1] to 85
+        set output[2] to 77
+        set output[3] to 66
+        set output[4] to 69
+        set output[5] to 82
+        set j to 6
+        while j < 16 do
+            set output[j] to 32
+            set j to j + 1
+        endwhile
+        set k to 0
+        while token[k] != 0 do
+            set output[j] to token[k]
+            set j to j + 1
+            set k to k + 1
+        endwhile
+        set output[j] to 0
+        print output
+        set tokenCount to tokenCount + 1
+        continue
+    endif
+
+    set found to 0
+    if c >= 65 then
+        if c <= 90 then
+            set found to 1
+        endif
+    endif
+    if c >= 97 then
+        if c <= 122 then
+            set found to 1
+        endif
+    endif
+    if c == 95 then
+        set found to 1
+    endif
+    if found == 1 then
+        set j to 0
+        set found to 1
+        while found == 1 do
+            set token[j] to buffer[i]
+            set j to j + 1
+            set i to i + 1
+            set c to buffer[i]
+            set found to 0
+            if c >= 65 then
+                if c <= 90 then
+                    set found to 1
+                endif
+            endif
+            if c >= 97 then
+                if c <= 122 then
+                    set found to 1
+                endif
+            endif
+            if c >= 48 then
+                if c <= 57 then
+                    set found to 1
+                endif
+            endif
+            if c == 95 then
+                set found to 1
+            endif
+        endwhile
+        set token[j] to 0
+
+        set found to 0
+        if token[0] == 105 then
+            if token[1] == 102 then
+                if token[2] == 0 then
+                    print "KEYWORD         if"
+                    set found to 1
+                endif
+            endif
+            if token[1] == 110 then
+                if token[2] == 116 then
+                    if token[3] == 0 then
+                        print "KEYWORD         int"
+                        set found to 1
+                    endif
+                endif
+            endif
+        endif
+        if token[0] == 101 then
+            if token[1] == 108 then
+                if token[2] == 115 then
+                    if token[3] == 101 then
+                        if token[4] == 0 then
+                            print "KEYWORD         else"
+                            set found to 1
+                        endif
+                    endif
+                endif
+            endif
+        endif
+        if token[0] == 102 then
+            if token[1] == 108 then
+                if token[2] == 111 then
+                    if token[3] == 97 then
+                        if token[4] == 116 then
+                            if token[5] == 0 then
+                                print "KEYWORD         float"
+                                set found to 1
+                            endif
+                        endif
+                    endif
+                endif
+            endif
+        endif
+        if token[0] == 119 then
+            if token[1] == 104 then
+                if token[2] == 105 then
+                    if token[3] == 108 then
+                        if token[4] == 101 then
+                            if token[5] == 0 then
+                                print "KEYWORD         while"
+                                set found to 1
+                            endif
+                        endif
+                    endif
+                endif
+            endif
+        endif
+        if token[0] == 114 then
+            if token[1] == 101 then
+                if token[2] == 116 then
+                    if token[3] == 117 then
+                        if token[4] == 114 then
+                            if token[5] == 110 then
+                                if token[6] == 0 then
+                                    print "KEYWORD         return"
+                                    set found to 1
+                                endif
+                            endif
+                        endif
+                    endif
+                endif
+            endif
+        endif
+
+        if found == 0 then
+            set output[0] to 73
+            set output[1] to 68
+            set j to 2
+            while j < 16 do
+                set output[j] to 32
+                set j to j + 1
+            endwhile
+            set k to 0
+            while token[k] != 0 do
+                set output[j] to token[k]
+                set j to j + 1
+                set k to k + 1
+            endwhile
+            set output[j] to 0
+            print output
+        endif
+        set tokenCount to tokenCount + 1
+        continue
+    endif
+
+    set i to i + 1
+endwhile
+
+print "-----------------------------------"
+print "Total Tokens:"
+print tokenCount
+print "-----------------------------------"
+
+end
